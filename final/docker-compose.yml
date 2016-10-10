@@ -1,0 +1,62 @@
+version: '2'
+services:
+  consul:
+    image: autopilotpattern/consul:latest
+    restart: always
+    dns:
+      - 127.0.0.1
+    ports:
+      - "8500"
+  influx:
+    image: tutum/influxdb
+    ports:
+      - "8086:8086"
+      - "8083:8083"
+    restart: always
+  serializer:
+    build: ./serializer
+    environment:
+      - INFLUX_HOST=influx
+      - PORT=10000
+    links:
+      - influx:influx
+    expose:
+      - "10000"
+    restart: always
+    depends_on:
+      - consul
+  frontend:
+    build: ./frontend
+    environment:
+      - PORT=10001
+    ports:
+      - 10001:10001
+    restart: always
+    depends_on:
+      - serializer
+      - consul
+  temperature:
+    build: ./temperature
+    env_file:
+      - sensors.env
+    restart: always
+    depends_on:
+      - serializer
+      - consul
+  motion:
+    build: ./motion
+    env_file:
+      - sensors.env
+    restart: always
+    depends_on:
+      - serializer
+      - consul
+  humidity:
+    build: ./humidity
+    env_file:
+      - sensors.env
+    restart: always
+    depends_on:
+      - serializer
+      - consul
+

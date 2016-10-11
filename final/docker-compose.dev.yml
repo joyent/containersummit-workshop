@@ -1,50 +1,57 @@
-consul:
-  extends:
-    file: docker-compose.yml
-    service: consul
-  command: >
-    /usr/local/bin/containerpilot
-    /bin/consul agent -server
-      -bootstrap-expect 1
-      -config-dir=/etc/consul
-      -ui-dir /ui
-serializer:
-  extends:
-    file: docker-compose.yml
-    service: serializer
-  links:
-    - consul:consul
-  environment:
-    - CONSUL_HOST=consul
-frontend:
-  extends:
-    file: docker-compose.yml
-    service: frontend
-  links:
-    - consul:consul
-  environment:
-    - CONSUL_HOST=consul
-temperature:
-  extends:
-    file: docker-compose.yml
-    service: temperature
-  links:
-    - consul:consul
-  environment:
-    - CONSUL_HOST=consul
-motion:
-  extends:
-    file: docker-compose.yml
-    service: motion
-  links:
-    - consul:consul
-  environment:
-    - CONSUL_HOST=consul
-humidity:
-  extends:
-    file: docker-compose.yml
-    service: humidity
-  links:
-    - consul:consul
-  environment:
-    - CONSUL_HOST=consul
+version: "2"
+services:
+  consul:
+    extends:
+      file: docker-compose.yml
+      service: consul
+    command: >
+      /usr/local/bin/containerpilot
+      /bin/consul agent -server
+        -bootstrap-expect 1
+        -config-dir=/etc/consul
+        -ui-dir /ui
+  serializer:
+    extends:
+      file: docker-compose.yml
+      service: serializer
+    links:
+      - consul:consul
+      - influx:influx
+    environment:
+      - CONSUL_HOST=consul
+  frontend:
+    extends:
+      file: docker-compose.yml
+      service: frontend
+    links:
+      - consul:consul
+    environment:
+      - CONSUL_HOST=consul
+  temperature:
+    extends:
+      file: docker-compose.yml
+      service: temperature
+    links:
+      - consul:consul
+    environment:
+      - CONSUL_HOST=consul
+  motion:
+    extends:
+      file: docker-compose.yml
+      service: motion
+    links:
+      - consul:consul
+    environment:
+      - CONSUL_HOST=consul
+  humidity:
+    extends:
+      file: docker-compose.yml
+      service: humidity
+    links:
+      - consul:consul
+    environment:
+      - CONSUL_HOST=consul
+  influx:
+    extends:
+      file: docker-compose.yml
+      service: influx

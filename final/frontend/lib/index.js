@@ -9,7 +9,7 @@ const Inert = require('inert');
 const Moment = require('moment');
 const Piloted = require('piloted');
 const Seneca = require('seneca');
-const ContainerPilot = require(process.env.CONTAINERPILOT);
+const ContainerPilot = require(process.env.CONTAINERPILOT_PATH);
 const WebStream = require('./webStream');
 
 

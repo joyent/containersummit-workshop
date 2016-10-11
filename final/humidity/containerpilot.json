@@ -2,9 +2,8 @@
   "consul": "{{ .CONSUL_HOST }}:8500",
   "services": [
     {
-      "name": "frontend",
-      "port": {{ .PORT }},
-      "health": "/usr/bin/curl -o /dev/null --fail -s http://localhost:{{ .PORT }}/heartbeat",
+      "name": "humidity",
+      "health": "/usr/bin/curl -o /dev/null --fail -s http://localhost:8080/heartbeat",
       "poll": 3,
       "ttl": 10
     }

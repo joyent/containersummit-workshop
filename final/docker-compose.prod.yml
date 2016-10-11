@@ -1,4 +1,4 @@
-consul:
+consul_prod:
   extends:
     file: docker-compose.yml
     service: consul

@@ -26,7 +26,6 @@ ENV CONTAINERPILOT_PATH=/etc/containerpilot.json
 COPY containerpilot.json ${CONTAINERPILOT_PATH}
 ENV CONTAINERPILOT=file://${CONTAINERPILOT_PATH}
 
-
 # Install our application
 RUN mkdir -p /opt/app/lib
 COPY package.json /opt/app/

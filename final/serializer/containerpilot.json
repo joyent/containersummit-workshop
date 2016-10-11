@@ -2,9 +2,9 @@
   "consul": "{{ .CONSUL_HOST }}:8500",
   "services": [
     {
-      "name": "frontend",
+      "name": "serializer",
       "port": {{ .PORT }},
-      "health": "/usr/bin/curl -o /dev/null --fail -s http://localhost:{{ .PORT }}/heartbeat",
+      "health": "/usr/bin/curl -o /dev/null --fail -s http://localhost:8080/heartbeat",
       "poll": 3,
       "ttl": 10
     }
@@ -19,13 +19,6 @@
                   "-retry-max", "10",
                   "-retry-interval", "10s"],
       "restarts": "unlimited"
-    }
-  ],
-  "backends": [
-    {
-      "name": "serializer",
-      "poll": 3,
-      "onChange": "pkill -SIGHUP node"
     }
   ]
 }

@@ -28,9 +28,11 @@ ENV CONTAINERPILOT=file://${CONTAINERPILOT_PATH}
 
 
 # Install our application
-RUN mkdir -p /opt/app/lib
+RUN mkdir -p /opt/app/lib/public
 COPY package.json /opt/app/
-COPY lib/* /opt/app/lib/
+COPY lib/*.js /opt/app/lib/
+COPY lib/public /opt/app/lib/public
 RUN cd /opt/app && npm install
 
-CMD ["/bin/containerpilot", "node", "/opt/app/"]
+ENTRYPOINT ["/bin/containerpilot", "node"]
+CMD ["/opt/app/"]

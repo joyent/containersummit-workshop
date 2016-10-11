@@ -3,9 +3,10 @@
   "services": [
     {
       "name": "humidity",
-      "health": "/usr/bin/curl -o /dev/null --fail -s http://localhost:8080/heartbeat",
+      "health": "/usr/bin/curl -o /dev/null --fail -s http://localhost:{{.PORT}}/heartbeat",
       "poll": 3,
-      "ttl": 10
+      "ttl": 10,
+      "port": {{.PORT}}
     }
   ],
   "coprocesses": [

@@ -5,10 +5,8 @@ services:
     restart: always
     dns:
       - 127.0.0.1
-    ports:
-      - "8500"
   influx:
-    image: tutum/influxdb
+    image: tutum/influxdb:latest
     ports:
       - "8086:8086"
       - "8083:8083"
@@ -29,16 +27,28 @@ services:
     restart: always
   temperature:
     build: ./temperature
+    expose:
+      - "8080"
+    environment:
+      - PORT=8080
     env_file:
       - sensors.env
     restart: always
   motion:
     build: ./motion
+    expose:
+      - "8080"
+    environment:
+      - PORT=8080
     env_file:
       - sensors.env
     restart: always
   humidity:
     build: ./humidity
+    expose:
+      - "8080"
+    environment:
+      - PORT=8080
     env_file:
       - sensors.env
     restart: always

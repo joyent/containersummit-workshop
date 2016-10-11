@@ -32,4 +32,5 @@ COPY package.json /opt/app/
 COPY lib/* /opt/app/lib/
 RUN cd /opt/app && npm install
 
-CMD ["/bin/containerpilot", "node", "/opt/app/"]
+ENTRYPOINT ["/bin/containerpilot", "node"]
+CMD ["/opt/app/"]

@@ -1,14 +1,11 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var graph;
 var websocket = require('websocket-stream');
 
-
-
 var initChart = function() {
-  graph = new Rickshaw.Graph( {
-    element: document.getElementById('chart'),
+  var tempChart = new Rickshaw.Graph( {
+    element: document.getElementById('temperature'),
     width: 700,
     height: 300,
     renderer: 'line',
@@ -16,61 +13,57 @@ var initChart = function() {
     series: [{
       data: [],
       color: '#6060c0',
-      name: 'sensor1'
+      name: 'temperature'
     }]
   });
-  graph.render();
+  tempChart.render();
 
   var hoverDetail = new Rickshaw.Graph.HoverDetail({
-    graph: graph,
+    graph: tempChart,
     xFormatter: function(x) {
       return new Date(x * 1000).toString();
     }
   });
 
   var annotator = new Rickshaw.Graph.Annotate({
-    graph: graph,
+    graph: tempChart,
     element: document.getElementById('timeline')
   });
 
   var ticksTreatment = 'glow';
 
   var xAxis = new Rickshaw.Graph.Axis.Time({
-    graph: graph,
+    graph: tempChart,
     ticksTreatment: ticksTreatment,
     timeFixture: new Rickshaw.Fixtures.Time.Local()
   });
   xAxis.render();
 
   var yAxis = new Rickshaw.Graph.Axis.Y({
-    graph: graph,
+    graph: tempChart,
     tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
     ticksTreatment: ticksTreatment
   });
   yAxis.render();
 
-  /*
   var start = (new Date().getTime() / 1000) - 50;
   for (var idx = 0; idx <= 50; ++idx) {
-    graph.series[0].data.push({x: start + idx, y: 0});
+    tempChart.series[0].data.push({x: start + idx, y: 0});
   }
-  */
-  graph.render();
+  tempChart.render();
 
   var stream = websocket(document.URL.replace('http', 'ws'));
   stream.on('data', function(data) {
-    updateChart(graph, JSON.parse(data));
+    updateChart(tempChart, JSON.parse(data));
   });
 };
-
-
 
 var updateChart = function(graph, data) {
   if (graph.series[0].data.length + data.length > 50) {
     graph.series[0].data = _.drop(graph.series[0].data, graph.series[0].data.length + data.length - 50);
   }
   data.forEach(function(point) {
-    if (point.sensorId === '1') {
+    if (point.temperature !== undefined) {
       graph.series[0].data.push({x: Math.round(point.time/1000), y: point.temperature});
     }
   });
@@ -78,19 +71,8 @@ var updateChart = function(graph, data) {
 };
 
 
-
-var initControls = function() {
-  $('#setOffset').click(function() {
-    $.get('/set?offset=' + $('#offset').val(), function() {
-    });
-  });
-};
-
-
-
 $(document).ready(function() {
   initChart();
-  initControls();
 });
 
 
@@ -4432,7 +4414,7 @@ inherits(DestroyableTransform, Transform)
 DestroyableTransform.prototype.destroy = function(err) {
   if (this._destroyed) return
   this._destroyed = true
-  
+
   var self = this
   process.nextTick(function() {
     if (err)

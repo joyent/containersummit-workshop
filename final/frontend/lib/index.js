@@ -9,19 +9,13 @@ const Inert = require('inert');
 const Moment = require('moment');
 const Piloted = require('piloted');
 const Seneca = require('seneca');
-const ContainerPilot = require(process.env.CONTAINERPILOT_PATH);
 const WebStream = require('./webStream');
 
 
-Piloted.config(ContainerPilot, (err) => {
-  const serializer = Piloted('serializer');
-
-  const seneca = Seneca();
-  seneca.client({
-    host: serializer.address,
-    port: serializer.port,
-    pin: { role: 'serialize', cmd: 'read' }
-  });
+Piloted.config({ backends: [ { name: 'serializer' } ] }, (err) => {
+  if (err) {
+    console.error(err);
+  }
 
   const serverConfig = {
     connections: {
@@ -48,37 +42,63 @@ Piloted.config(ContainerPilot, (err) => {
       }
     });
 
-    const webStream = WebStream(server.listener);
-
-    let lastEmitted = 0;
-    let i = 0;
-    setInterval(() => {
-      seneca.act({
-        role: 'serialize',
-        cmd: 'read',
-        sensorId: '1',
-        start: Moment().subtract(10, 'minutes').utc().format(),
-        end: Moment().utc().format()
-      }, (err, data) => {
-        let toEmit = [];
-
-        data[0].forEach((point) => {
-          if (Moment(point.time).unix() > lastEmitted) {
-            lastEmitted = Moment(point.time).unix();
-            point.time = (new Date(point.time)).getTime();
-            toEmit.push(point);
-          }
-        });
-        if (toEmit.length) {
-          console.log('will emit');
-          console.log(toEmit);
-          webStream.emit(toEmit);
-        }
-      });
-    }, 1000);
+    startReading(server.listener);
 
     server.start(() => {
       console.log(`listening at http://localhost:${server.info.port}`);
     });
   });
 });
+
+const startReading = function (listener) {
+  const serializer = Piloted('serializer');
+  if (!serializer) {
+    console.error('Serializer not found');
+    return setTimeout(() => { startReading(listener); }, 1000);
+  }
+
+  const webStream = WebStream(listener);
+  const seneca = Seneca();
+
+  seneca.client({
+    host: serializer.address,
+    port: serializer.port
+  });
+
+  let lastEmitted = 0;
+  let i = 0;
+  setInterval(() => {
+    seneca.act({
+      role: 'serialize',
+      cmd: 'read',
+      sensorId: '1',
+      start: Moment().subtract(1000, 'minutes').utc().format(),
+      end: Moment().utc().format()
+    }, (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      if (!data) {
+        console.error('No data found');
+        return;
+      }
+
+      let toEmit = [];
+      console.log(data);
+
+      data[0].forEach((point) => {
+        if (Moment(point.time).unix() > lastEmitted) {
+          lastEmitted = Moment(point.time).unix();
+          point.time = (new Date(point.time)).getTime();
+          toEmit.push(point);
+        }
+      });
+      if (toEmit.length) {
+        console.log('will emit');
+        console.log(toEmit);
+        webStream.emit(toEmit);
+      }
+    });
+  }, 1000);
+};

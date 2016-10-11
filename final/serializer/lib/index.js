@@ -4,54 +4,44 @@ const Brule = require('brule');
 const Hapi = require('hapi');
 const Influx = require('influx');
 const Seneca = require('seneca');
-const InfluxUtil = require('./influxUtil');
 
+
+const db = Influx({host: 'influx', username: process.env.INFLUXDB_USER, password: process.env.INFLUXDB_PWD, database: 'temperature'});
 
 const seneca = Seneca();
+seneca.add({role: 'serialize', cmd: 'read'}, (args, cb) => {
+  readPoints(args.sensorId, args.start, args.end, cb);
+});
 
-const createDatabase = function (cb) {
-  setTimeout(() => {
-    const initDb = Influx({host: 'influx', username: 'root', password: 'root'});
-    initDb.createDatabase('temperature', (err) => {
-      if (err) {
-        console.error(`ERROR: ${err}`);
-      }
+seneca.add({role: 'serialize', cmd: 'write'}, (args, cb) => {
+  writePoint(args.sensorId, args.temperature, cb);
+});
 
-      cb();
-    });
-  }, 3000);
-};
+seneca.listen({ port: process.env.PORT });
 
+const hapi = new Hapi.Server();
+hapi.connection({ host: '127.0.0.1', port: 8080 });
+hapi.register(Brule, (err) => {
+  if (err) {
+    console.error(err);
+  }
 
-createDatabase(() => {
-  const db = Influx({host: 'influx', username: 'root', password: 'root', database: 'temperature'});
-  const ifx = InfluxUtil(db);
-
-  seneca.add({role: 'serialize', cmd: 'read'}, (args, cb) => {
-    ifx.readPoints(args.sensorId, args.start, args.end, cb);
-  });
-
-  seneca.add({role: 'serialize', cmd: 'write'}, (args, cb) => {
-    ifx.writePoint(args.sensorId, args.temperature, cb);
-  });
-
-  seneca.listen({ port: process.env.PORT });
-
-  const hapi = new Hapi.Server();
-  hapi.connection({ host: 127.0.0.1, port: 8080 });
-  hapi.register(Brule, (err) => {
+  hapi.start((err) => {
     if (err) {
       console.error(err);
-      process.exit(1);
     }
 
-    hapi.start((err) => {
-      if (err) {
-        console.error(err);
-        process.exit(1);
-      }
-
-      console.log(`Hapi server started at http://127.0.0.1:${hapi.info.address().port}`);
-    });
+    console.log(`Hapi server started at http://127.0.0.1:${hapi.info.port}`);
   });
 });
+
+
+
+function writePoint (sensorId, temperature, cb) {
+  db.writePoint('temperature', {sensorId: sensorId, temperature: temperature}, {}, cb);
+};
+
+function readPoints (sensorId, start, end, cb) {
+  const query = `select * from temperature where sensorId='${sensorId}' and time > '${start}'`;
+  db.query(query, cb);
+};

@@ -31,23 +31,24 @@ Piloted.config({ backends: [ { name: 'serializer' } ] }, (err) => {
 });
 
 const readData = function () {
+  const seneca = Seneca();
+
+  setInterval(() => {
     const serializer = Piloted('serializer');
     if (!serializer) {
       console.error('Serializer not found');
-      return setTimeout(() => { readData(); }, 1000);
+      return;
     }
 
-    const seneca = Seneca();
     seneca.client({
       host: serializer.address,
       port: serializer.port
     });
 
-    setInterval(() => {
-      seneca.act({ role: 'serialize', cmd: 'write', sensorId: '1', temperature: Math.floor(Math.random() * 100) }, (err) => {
-        if (err) {
-          console.error(err);
-        }
-      });
-    }, 2000);
+    seneca.act({ role: 'serialize', cmd: 'write', type: 'temperature', value: Math.floor(Math.random() * 110) }, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
+  }, 2000);
 };

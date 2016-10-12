@@ -9,9 +9,7 @@ const Seneca = require('seneca');
 
 
 Piloted.config({ backends: [ { name: 'serializer' } ] }, (err) => {
-  const serializer = Piloted('serializer');
-
-  const seneca = Seneca();
+  readData();
 
   const hapi = new Hapi.Server();
   hapi.connection({ port: process.env.PORT });
@@ -31,3 +29,26 @@ Piloted.config({ backends: [ { name: 'serializer' } ] }, (err) => {
     });
   });
 });
+
+const readData = function () {
+  const seneca = Seneca();
+
+  setInterval(() => {
+    const serializer = Piloted('serializer');
+    if (!serializer) {
+      console.error('Serializer not found');
+      return;
+    }
+
+    seneca.client({
+      host: serializer.address,
+      port: serializer.port
+    });
+
+    seneca.act({ role: 'serialize', cmd: 'write', type: 'humidity', value: Math.floor(Math.random() * 100) }, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
+  }, 2000);
+};

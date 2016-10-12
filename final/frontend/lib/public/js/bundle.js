@@ -3,9 +3,9 @@
 
 var websocket = require('websocket-stream');
 
-var initChart = function() {
-  var tempChart = new Rickshaw.Graph( {
-    element: document.getElementById('temperature'),
+var initChart = function(type) {
+  var chart = new Rickshaw.Graph( {
+    element: document.getElementById(type),
     width: 700,
     height: 300,
     renderer: 'line',
@@ -13,34 +13,34 @@ var initChart = function() {
     series: [{
       data: [],
       color: '#6060c0',
-      name: 'temperature'
+      name: type
     }]
   });
-  tempChart.render();
+  chart.render();
 
   var hoverDetail = new Rickshaw.Graph.HoverDetail({
-    graph: tempChart,
+    graph: chart,
     xFormatter: function(x) {
       return new Date(x * 1000).toString();
     }
   });
 
   var annotator = new Rickshaw.Graph.Annotate({
-    graph: tempChart,
-    element: document.getElementById('timeline')
+    graph: chart,
+    element: document.getElementById(type + '-timeline')
   });
 
   var ticksTreatment = 'glow';
 
   var xAxis = new Rickshaw.Graph.Axis.Time({
-    graph: tempChart,
+    graph: chart,
     ticksTreatment: ticksTreatment,
     timeFixture: new Rickshaw.Fixtures.Time.Local()
   });
   xAxis.render();
 
   var yAxis = new Rickshaw.Graph.Axis.Y({
-    graph: tempChart,
+    graph: chart,
     tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
     ticksTreatment: ticksTreatment
   });
@@ -48,31 +48,44 @@ var initChart = function() {
 
   var start = (new Date().getTime() / 1000) - 50;
   for (var idx = 0; idx <= 50; ++idx) {
-    tempChart.series[0].data.push({x: start + idx, y: 0});
+    chart.series[0].data.push({x: start + idx, y: 0});
   }
-  tempChart.render();
+  chart.render();
 
-  var stream = websocket(document.URL.replace('http', 'ws'));
-  stream.on('data', function(data) {
-    updateChart(tempChart, JSON.parse(data));
-  });
+  return chart;
 };
 
-var updateChart = function(graph, data) {
-  if (graph.series[0].data.length + data.length > 50) {
-    graph.series[0].data = _.drop(graph.series[0].data, graph.series[0].data.length + data.length - 50);
+var updateChart = function(graph, point) {
+  if (new Date(graph.series[0].data[graph.series[0].data.length - 1].time).getTime() > new Date(point.time).getTime()) {
+    return;
   }
-  data.forEach(function(point) {
-    if (point.temperature !== undefined) {
-      graph.series[0].data.push({x: Math.round(point.time/1000), y: point.temperature});
-    }
-  });
-  graph.render();
+
+  if (graph.series[0].data.length + 1 > 50) {
+    graph.series[0].data = _.drop(graph.series[0].data, graph.series[0].data.length + 1 - 50);
+  }
+
+  graph.series[0].data.push({x: Math.round(point.time / 1000), y: point.value});
 };
 
 
 $(document).ready(function() {
-  initChart();
+  var tempChart = initChart('temperature');
+  var humidityChart = initChart('humidity');
+  var motionChart = initChart('motion');
+
+  var stream = websocket(document.URL.replace('http', 'ws'));
+  stream.on('data', function(data) {
+    var parsed = JSON.parse(data);
+    for (var i = 0; i < parsed.length; ++i) {
+      var point = parsed[i];
+      var chart = point.type === 'temperature' ? tempChart : (point.type === 'humidity' ? humidityChart : motionChart);
+      updateChart(chart, point);
+    }
+
+    tempChart.render();
+    humidityChart.render();
+    motionChart.render();
+  });
 });
 
 

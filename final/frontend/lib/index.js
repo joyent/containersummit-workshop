@@ -71,33 +71,32 @@ const startReading = function (listener) {
     seneca.act({
       role: 'serialize',
       cmd: 'read',
-      sensorId: '1',
-      start: Moment().subtract(1000, 'minutes').utc().format(),
+      start: Moment().subtract(10, 'minutes').utc().format(),
       end: Moment().utc().format()
-    }, (err, data) => {
+    }, (err, points) => {
       if (err) {
         console.error(err);
-        return;
       }
-      if (!data) {
-        console.error('No data found');
+
+      if (!points || !points.length) {
+        console.error('No points found');
         return;
       }
 
       let toEmit = [];
-      console.log(data);
-
-      data[0].forEach((point) => {
+      points = [].concat.apply([], points);
+      console.log('POINTS:');
+      console.log(points);
+      points.forEach((point) => {
         if (Moment(point.time).unix() > lastEmitted) {
           lastEmitted = Moment(point.time).unix();
           point.time = (new Date(point.time)).getTime();
           toEmit.push(point);
         }
       });
+
       if (toEmit.length) {
-        console.log('will emit');
-        console.log(toEmit);
-        webStream.emit(toEmit);
+        webStream.emit([].concat.apply([], toEmit));
       }
     });
   }, 1000);

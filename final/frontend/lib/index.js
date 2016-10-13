@@ -11,7 +11,7 @@ const Seneca = require('seneca');
 const WebStream = require('./webStream');
 
 
-Piloted.config({ backends: [ { name: 'serializer' } ] }, (err) => {
+Piloted.config({ consul: 'localhost:8500', backends: [ { name: 'serializer' } ] }, (err) => {
   if (err) {
     console.error(err);
   }
@@ -70,7 +70,7 @@ const startReading = function (listener) {
     seneca.act({
       role: 'serialize',
       cmd: 'read',
-      ago: 1                // Minutes ago
+      ago: 5                // Minutes ago
     }, (err, points) => {
       if (err) {
         console.error(err);

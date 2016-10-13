@@ -9,7 +9,11 @@ const Piloted = require('piloted');
 const Seneca = require('seneca');
 
 
-Piloted.config({ backends: [ { name: 'serializer' } ] }, (err) => {
+Piloted.config({ consul: 'localhost:8500', backends: [ { name: 'serializer' } ] }, (err) => {
+  if (err) {
+    console.error(err);
+  }
+
   readData();
 
   const hapi = new Hapi.Server();

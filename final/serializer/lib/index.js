@@ -1,38 +1,27 @@
 'use strict';
 
 const Brule = require('brule');
+const FlattenDeep = require('lodash.flattendeep');
 const Hapi = require('hapi');
 const Influx = require('influx');
+const Items = require('items');
 const Seneca = require('seneca');
 
 
-const db = Influx({host: 'influx', username: process.env.INFLUXDB_USER, password: process.env.INFLUXDB_PWD, database: 'temperature'});
+const db = Influx({host: 'influx', username: process.env.INFLUXDB_USER, password: process.env.INFLUXDB_PWD, database: 'sensors'});
 
 const seneca = Seneca();
 
 seneca.add({ role: 'serialize', cmd: 'read' }, (args, cb) => {
-  const results = [];
-  const errors = [];
-  let ct = 3;
-
-  const finish = function (err, result) {
-    ct--;
-
-    if (err) {
-      errors.push(err);
-    }
-    else if (result) {
-      results.push(result);
-    }
-
-    if (ct === 0) {
-      return cb(errors, [].concat.apply([], results));
-    }
-  };
-
-  readPoints('temperature', args.ago, finish);
-  readPoints('humidity', args.ago, finish);
-  readPoints('motion', args.ago, finish);
+  let results = [];
+  Items.serial(['motion', 'humidity', 'temperature'], (type, next) => {
+    readPoints(type, args.ago, (err, result) => {
+      results = results.concat(result);
+      next();
+    });
+  }, () => {
+    cb(null, FlattenDeep(results));
+  });
 });
 
 seneca.add({ role: 'serialize', cmd: 'read', type: 'temperature' }, (args, cb) => {
@@ -92,6 +81,6 @@ function readPoints (type, ago, cb) {
       }
     }
 
-    return cb(err, results);
+    return cb(null, results);
   });
 };

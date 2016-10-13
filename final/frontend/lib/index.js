@@ -6,7 +6,6 @@ const Path = require('path');
 const Brule = require('brule');
 const Hapi = require('hapi');
 const Inert = require('inert');
-const Moment = require('moment');
 const Piloted = require('piloted');
 const Seneca = require('seneca');
 const WebStream = require('./webStream');
@@ -71,7 +70,7 @@ const startReading = function (listener) {
     seneca.act({
       role: 'serialize',
       cmd: 'read',
-      ago: 2
+      ago: 1                // Minutes ago
     }, (err, points) => {
       if (err) {
         console.error(err);
@@ -85,9 +84,10 @@ const startReading = function (listener) {
       let toEmit = [];
       points = [].concat.apply([], points);
       points.forEach((point) => {
-        if (Moment(point.time).unix() > lastEmitted) {
-          lastEmitted = Moment(point.time).unix();
-          point.time = (new Date(point.time)).getTime();
+        point.time = (new Date(point.time)).getTime();
+
+        if (point.time > lastEmitted) {
+          lastEmitted = point.time;
           toEmit.push(point);
         }
       });
@@ -96,5 +96,5 @@ const startReading = function (listener) {
         webStream.emit([].concat.apply([], toEmit));
       }
     });
-  }, 1000);
+  }, 2000);
 };

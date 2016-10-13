@@ -3,8 +3,8 @@
 // Load modules
 
 const Brule = require('brule');
-const Series = require('fastseries')();
 const Hapi = require('hapi');
+const Items = require('items');
 const Piloted = require('piloted');
 const Seneca = require('seneca');
 
@@ -68,12 +68,11 @@ const readData = function () {
     });
 
     data = [].concat.apply([], data);
-    console.log(data);
 
     serializer.ready(() => {
-      Series({}, (point, next) => {
+      Items.serial(data, (point, next) => {
         serializer.act({ role: 'serialize', cmd: 'write', type: 'humidity', value: point.value }, next);
-      }, data, (err) => {
+      }, (err) => {
         readAgain();
       });
     });

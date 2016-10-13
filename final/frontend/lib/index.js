@@ -71,8 +71,7 @@ const startReading = function (listener) {
     seneca.act({
       role: 'serialize',
       cmd: 'read',
-      start: Moment().subtract(10, 'minutes').utc().format(),
-      end: Moment().utc().format()
+      ago: 2
     }, (err, points) => {
       if (err) {
         console.error(err);
@@ -85,8 +84,6 @@ const startReading = function (listener) {
 
       let toEmit = [];
       points = [].concat.apply([], points);
-      console.log('POINTS:');
-      console.log(points);
       points.forEach((point) => {
         if (Moment(point.time).unix() > lastEmitted) {
           lastEmitted = Moment(point.time).unix();

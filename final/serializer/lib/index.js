@@ -30,21 +30,21 @@ seneca.add({ role: 'serialize', cmd: 'read' }, (args, cb) => {
     }
   };
 
-  readPoints('temperature', args.start, args.end, finish);
-  readPoints('humidity', args.start, args.end, finish);
-  readPoints('motion', args.start, args.end, finish);
+  readPoints('temperature', args.ago, finish);
+  readPoints('humidity', args.ago, finish);
+  readPoints('motion', args.ago, finish);
 });
 
 seneca.add({ role: 'serialize', cmd: 'read', type: 'temperature' }, (args, cb) => {
-  readPoints('temperature', args.start, args.end, cb);
+  readPoints('temperature', args.ago, cb);
 });
 
 seneca.add({ role: 'serialize', cmd: 'read', type: 'humidity' }, (args, cb) => {
-  readPoints('humidity', args.start, args.end, cb);
+  readPoints('humidity', args.ago, cb);
 });
 
 seneca.add({ role: 'serialize', cmd: 'read', type: 'motion' }, (args, cb) => {
-  readPoints('motion', args.start, args.end, cb);
+  readPoints('motion', args.ago, cb);
 });
 
 seneca.add({ role: 'serialize', cmd: 'write', type: 'temperature' }, (args, cb) => {
@@ -82,8 +82,9 @@ function writePoint (type, value, cb) {
   db.writePoint(type, { value }, {}, cb);
 };
 
-function readPoints (type, start, end, cb) {
-  const query = `select * from ${type} where time > '${start}' and time <= '${end}'`;
+function readPoints (type, ago, cb) {
+  ago = ago || 0;
+  const query = `select * from ${type} where time > now() - ${ago}m`;
   db.query(query, (err, results) => {
     if (results && results.length && results[0] && results[0].length) {
       for (let i = 0; i < results[0].length; ++i) {

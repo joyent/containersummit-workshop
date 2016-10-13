@@ -3,6 +3,7 @@
 // Load modules
 
 const Brule = require('brule');
+const Series = require('fastseries')();
 const Hapi = require('hapi');
 const Piloted = require('piloted');
 const Seneca = require('seneca');
@@ -30,25 +31,55 @@ Piloted.config({ backends: [ { name: 'serializer' } ] }, (err) => {
   });
 });
 
-const readData = function () {
-  const seneca = Seneca();
+const ignore = () => {};
 
-  setInterval(() => {
-    const serializer = Piloted('serializer');
-    if (!serializer) {
-      console.error('Serializer not found');
-      return;
+const smartthings = Seneca();
+smartthings.client({
+  host: process.env.SMARTTHINGS_HOST,
+  port: process.env.SMARTTHINGS_PORT
+});
+
+const readData = function () {
+  smartthings.act({
+    role: 'smartthings',
+    cmd: 'read',
+    type: 'humidity',
+    ago: 2
+  }, (err, data) => {
+    if (err) {
+      console.error(err);
+      return readAgain();
     }
 
-    seneca.client({
-      host: serializer.address,
-      port: serializer.port
+    if (!data || !data.length) {
+      return readAgain();
+    }
+
+    const serializer = Seneca();
+    const serializerServer = Piloted('serializer');
+    if (!serializerServer) {
+      console.error('Serializer not found');
+      return readAgain();
+    }
+
+    serializer.client({
+      host: serializerServer.address,
+      port: serializerServer.port
     });
 
-    seneca.act({ role: 'serialize', cmd: 'write', type: 'humidity', value: Math.floor(Math.random() * 100) }, (err) => {
-      if (err) {
-        console.error(err);
-      }
+    data = [].concat.apply([], data);
+    console.log(data);
+
+    serializer.ready(() => {
+      Series({}, (point, next) => {
+        serializer.act({ role: 'serialize', cmd: 'write', type: 'humidity', value: point.value }, next);
+      }, data, (err) => {
+        readAgain();
+      });
     });
-  }, 2000);
+  });
+};
+
+const readAgain = function () {
+  setTimeout(readData, 5000);
 };

@@ -7,6 +7,7 @@
   "license": "MPL-2.0",
   "dependencies": {
     "brule": "1.x.x",
+    "fastseries": "1.7.x",
     "hapi": "15.x.x",
     "piloted": "1.x.x",
     "seneca": "3.x.x"

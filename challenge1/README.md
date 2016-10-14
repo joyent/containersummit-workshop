@@ -2,11 +2,9 @@
 
 ![image](../images/challenge1.png)
 
-In this challenge we have a simple frontend for our system. Let's start by
-installing the dependencies and running it.
+In this challenge we have a simple frontend for our system. Let's start by installing the dependencies and running it.
 
-If you haven't done so already, start by running `yarn install` in the top level
-directory of this repo.
+If you haven't done so already, run `yarn install` in the top level directory of this repo.
 
 ```sh
 cd frontend/

@@ -25,5 +25,7 @@ __hint__ read about the [`docker build`](https://docs.docker.com/engine/referenc
 
 __hint__ read about the [`docker run`](https://docs.docker.com/engine/reference/commandline/run/) command
 
+__hint__ you will need the IP Address of influx and the serializer to connect them together and to the frontend. Use `docker inspect [ContainerID] | grep "IPAddress"` replacing the [ContainerID] with the one created.
+
 
 ## Next Up: [Challenge 6](../challenge6/README.md)

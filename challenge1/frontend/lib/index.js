@@ -3,7 +3,6 @@
 // Load modules
 
 const Path = require('path');
-const Brule = require('brule');
 const Hapi = require('hapi');
 const Inert = require('inert');
 const WebStream = require('./webStream');
@@ -21,7 +20,7 @@ const serverConfig = {
 
 const server = new Hapi.Server(serverConfig);
 server.connection({ port: process.env.PORT });
-server.register([Inert, Brule], () => {
+server.register([Inert], () => {
   server.route({
     method: 'GET',
     path: '/{param*}',

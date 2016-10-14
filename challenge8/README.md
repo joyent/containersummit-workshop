@@ -1,4 +1,4 @@
-## Solution to Challenge 67
+## Solution to Challenge 7
 
 1. Add the following to the `docker-compose.yml` file
 
@@ -26,7 +26,10 @@ Stop the containers by using the `docker-compose down`.
 
 ![image](../images/challenge8.png)
 
+The frontend is updated with a chart for 'humidity', and now there is a new humidity service that behaves like the temperature service. It will pull data from our MultiSensor and report it to the serializer.
 
+Update the `docker-compose.yml` file to include the `humidity` service.
 
+__hint__ look at the existing temperature service for an example
 
 ## Next Up: [Challenge 9](../challenge9/README.md)

@@ -27,10 +27,10 @@ Stop the containers by using the `docker kill` or `docker stop` commands.
 
 ![image](../images/challenge6.png)
 
-Docker-compose makes managing and linking the various containers easier. For this challenge, use `docker-compose` to build and run the containers. There is a `docker-compose.yml` for your convenience
+Docker-compose makes managing and linking the various containers easier. For this challenge, use `docker-compose` to build and run the containers. There is a `docker-compose.yml` file for your convenience
 
 
-__hint__ read about the [`docker-compose run`](https://docs.docker.com/compose/reference/run/) command
+__hint__ read about the [`docker-compose up`](https://docs.docker.com/compose/reference/up/) command
 
 
 ## Next Up: [Challenge 7](../challenge7/README.md)

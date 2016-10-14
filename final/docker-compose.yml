@@ -37,6 +37,7 @@ services:
     environment:
       - PORT=10000
       - CONSUL_HOST=consul
+      - INFLUXDB_HOST=influx
       - INFLUXDB_USER=root
       - INFLUXDB_PWD=root
     expose:

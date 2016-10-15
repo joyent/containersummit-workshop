@@ -7,12 +7,9 @@
   "author": "",
   "license": "MPL-2.0",
   "dependencies": {
-    "brule": "1.x.x",
     "end-of-stream": "1.x.x",
     "hapi": "15.x.x",
     "inert": "4.x.x",
-    "piloted": "1.x.x",
-    "seneca": "3.x.x",
     "websocket-stream": "3.x.x"
   }
 }

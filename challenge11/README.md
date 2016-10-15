@@ -21,6 +21,9 @@ ports:
 
 Stop the containers by using the `docker-compose down`.
 
+Open the slides and read learn about Consul & ContainerPilot
+
+
 
 ## Challenge 11
 

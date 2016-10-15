@@ -58,12 +58,12 @@ var initChart = function(type) {
 var updateChart = function(graph, point) {
   var oldTime = graph.series[0].data[graph.series[0].data.length - 1].x;
   var newTime = Math.round(point.time / 1000);
-  if (oldTime > newTime) {
+  if (oldTime >= newTime) {
     return;
   }
 
   if (graph.series[0].data.length >= 50) {
-    graph.series[0].data = _.drop(graph.series[0].data, graph.series[0].data.length - 50);
+    graph.series[0].data = _.drop(graph.series[0].data, graph.series[0].data.length - 49);
   }
 
   graph.series[0].data.push({ x: newTime, y: point.value });

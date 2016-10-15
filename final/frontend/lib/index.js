@@ -41,7 +41,7 @@ Piloted.config({ consul: 'localhost:8500', backends: [ { name: 'serializer' } ] 
       }
     });
 
-    startReading(server.listener);
+    startReading(WebStream(server.listener));
 
     server.start(() => {
       console.log(`listening at http://localhost:${server.info.port}`);
@@ -49,24 +49,20 @@ Piloted.config({ consul: 'localhost:8500', backends: [ { name: 'serializer' } ] 
   });
 });
 
-const startReading = function (listener) {
-  const serializer = Piloted('serializer');
-  if (!serializer) {
-    console.error('Serializer not found');
-    return setTimeout(() => { startReading(listener); }, 1000);
-  }
-
-  const webStream = WebStream(listener);
-  const seneca = Seneca();
-
-  seneca.client({
-    host: serializer.address,
-    port: serializer.port
-  });
-
+const startReading = function (webStream) {
   let lastEmitted = 0;
-  let i = 0;
   setInterval(() => {
+    const serializer = Piloted('serializer');
+    if (!serializer) {
+      return;
+    }
+
+    const seneca = Seneca();
+    seneca.client({
+      host: serializer.address,
+      port: serializer.port
+    });
+
     seneca.act({
       role: 'serialize',
       cmd: 'read',
@@ -77,14 +73,13 @@ const startReading = function (listener) {
       }
 
       if (!points || !points.length) {
-        console.error('No points found');
         return;
       }
 
       let toEmit = [];
       points = [].concat.apply([], points);
       points.forEach((point) => {
-        point.time = (new Date(point.time)).getTime();
+        point.time = (new Date(point.time || Date.now())).getTime();
 
         if (point.time > lastEmitted) {
           lastEmitted = point.time;

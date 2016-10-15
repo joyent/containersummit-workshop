@@ -10,7 +10,7 @@
     environment:
       - SERIALIZER_HOST=serializer
       - SERIALIZER_PORT=10000
-      - SMARTTHINGS_HOST=64.30.129.48
+      - SMARTTHINGS_HOST=smartthings.svc.30f62ec2-24a2-6f8e-8fad-d46b04c8a0b9.us-sw-1.triton.zone
       - SMARTTHINGS_PORT=8000
     restart: always
 ```

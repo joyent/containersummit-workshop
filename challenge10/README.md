@@ -32,6 +32,9 @@ Stop the containers by using the `docker-compose down`.
 
 ![image](../images/challenge10.png)
 
+There are quite a few services depending on the serializer. For this challenge, scale the serializer out to 2 instances using `docker-compose scale serializer=2`. Alter the `docker-compose.yml` file so that the serializer isn't port mapping to the same external port of 10000.
+
+__hint__ read the documentation on docker [ports](https://docs.docker.com/compose/compose-file/#/ports)
 
 
-## Next Up: [Challenge 10](../challenge10/README.md)
+## Next Up: [Challenge 11](../challenge11/README.md)

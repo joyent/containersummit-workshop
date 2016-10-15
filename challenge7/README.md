@@ -24,7 +24,7 @@ __hint__ If you look at the temperature service code you will see that it uses t
 
 * `SERIALIZER_HOST`
 * `SERIALIZER_PORT`
-* `SMARTTHINGS_HOST=64.30.129.48`
+* `SMARTTHINGS_HOST=smartthings.svc.30f62ec2-24a2-6f8e-8fad-d46b04c8a0b9.us-sw-1.triton.zone`
 * `SMARTTHINGS_PORT=8000`
 
 __hint__ use `docker-compose logs -f` to see the logs

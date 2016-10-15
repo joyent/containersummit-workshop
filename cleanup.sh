@@ -5,11 +5,11 @@ docker stop $(docker ps -a -q)
 echo "Removing all containers"
 docker rm $(docker ps -a -q)
 echo "Removing any <none> images"
-docker rmi $(docker images | grep '<none>' | awk '{print $3}')
+docker rmi $(docker images | grep '<none>' | awk '{print $3}') -f
 echo "Removing any containersummit images"
-docker rmi $(docker images | grep 'containersummithelloworld' | awk '{print $3}')
+docker rmi $(docker images | grep 'containersummit' | awk '{print $3}') -f
 echo "Removing challenge images"
-docker rmi $(docker images | grep 'challenge' | awk '{print $3}')
+docker rmi $(docker images | grep 'challenge' | awk '{print $3}') -f
 
 # echo "Removing tutum image"
 # docker rmi $(docker images | grep '^tutum' | awk '{print $3}')

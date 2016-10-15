@@ -115,3 +115,35 @@ Presented by Wyatt Preul
 ### Challenge 11
 
 once ready to learn about Consul and ContainerPilot, open the next slide
+
+
+
+### Consul
+
+* Service catalog/registry
+* Nice API and works well with ContainerPilot
+
+
+
+### ContainerPilot
+
+* Implements [Autopilot Pattern](http://autopilotpattern.io/)
+* Hooks for application running in docker (preStart, preStop, postStop)
+* Makes it trivial to register service with Consul
+* Notifies application when dependencies change in Consul
+
+
+
+### Combining Consul & ContainerPilot
+
+* Alternative to loadbalancer (managed by developers)
+* Need to be notified when dependent service changes
+* Health monitoring our service
+* Register our services with consul and make it easy to find our dependencies
+
+
+
+### Challenge 11
+
+* All services are mostly updated to use consul and ContainerPilot
+* Update `docker-compose.yml` entries to link consul and set the CONSUL_HOST environment variable

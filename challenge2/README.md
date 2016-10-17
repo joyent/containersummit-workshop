@@ -5,7 +5,9 @@ cd frontend/
 PORT=10001 node .
 ```
 
-Point your browser to [http://localhost:10001](). You should see a chart. Simple!
+Point your browser to [http://localhost:10001](). You should see a chart, like the one shown here:
+
+![image](../images/frontned.png)
 
 ## Challenge 2
 

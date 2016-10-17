@@ -2,7 +2,7 @@
 
 1. Add the following to the `docker-compose.yml` file
 
-```
+  ```
   temperature:
     build: ./temperature
     links:
@@ -13,8 +13,7 @@
       - SMARTTHINGS_HOST=smartthings.svc.30f62ec2-24a2-6f8e-8fad-d46b04c8a0b9.us-sw-1.triton.zone
       - SMARTTHINGS_PORT=8000
     restart: always
-```
-
+  ```
 2. Build and run the containers `docker-compose up -d`
 3. Point your browser to [http://localhost:10001/]() to see the chart.
 4. Write data to the serializer using the `serializer/testWrite.sh` script.

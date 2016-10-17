@@ -2,6 +2,7 @@
 
 1. The container can be started with the run script `./influx/run.sh`
 2. Start the serializer with the required environment variables
+
   ```sh
   INFLUXDB_HOST=localhost INFLUXDB_USER=root INFLUXDB_PWD=root PORT=10000 node .
   ```

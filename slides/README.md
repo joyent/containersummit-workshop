@@ -11,8 +11,8 @@ yarn/npm install
 
 ## Building and scaling microservices with ContainerPilot and Node.js
 
-* adapted from [_microservices-iot_](https://github.com/nearform/micro-services-tutorial-iot)
-* adapted from [_microservices-workshop_](https://github.com/lloydbenson/microservices-workshop)
+* Adapted from [_microservices-iot_](https://github.com/nearform/micro-services-tutorial-iot)
+* Adapted from [_microservices-workshop_](https://github.com/lloydbenson/microservices-workshop)
 
 Presented by Wyatt Preul
 
@@ -20,16 +20,33 @@ Presented by Wyatt Preul
 
 ### Challenges
 
-* each challenge has its own folder
-* read the README.md in each challenge for the instructions
-* each subsequent challenge has the solution to the previous challenge
+* Each challenge has its own folder
+* Read the README.md for each challenge
+* Each subsequent challenge has the solution to the previous challenge
 
 
 
 ### Tools required
 
-* docker
+* Docker
 * Node.js (tested on version 6)
+
+
+
+### What we are Building
+
+* Microservices that pull data from SmartThings service
+* Data is serialized and saved in InfluxDB
+* Frontend presents the data as charts with live updates using WebSockets
+
+
+
+### Concepts Presented
+
+* Containers
+* Service discovery
+* Microservices
+* Autopilot Pattern
 
 
 
@@ -64,26 +81,32 @@ Presented by Wyatt Preul
 
 
 
+### Containers
+
+<img src="../images/nist_on_containers.png" />
+
+
+
 ### Challenge 3 - microservices?
 
-* not a new concept; see unix
-* small, focused, decoupled components
-* independently deployable
-* well suited for Node.js
+* Not a new concept; see unix
+* Small, focused, decoupled components
+* Independently deployable
+* Well suited for Node.js
 
 
 
 ### Accelerated Development
-* small components (easily grokked)
-* independently deployable
-* easily replaceable
+* Small components (easily grokked)
+* Independently deployable
+* Easily replaceable
 
 
 
 ### Some Benefits
-* accelerated development
-* [optimized for delete](http://vimeo.com/108441214)
-* resilient, easy to scale
+* Accelerated development
+* [Optimized for delete](http://vimeo.com/108441214)
+* Resilient, easy to scale
 
 
 
@@ -100,7 +123,7 @@ Presented by Wyatt Preul
 
 * Node.js toolkit for microservices
 * Uses actor model
-* Doesn't care about transport, only JSON messages
+* Transport agnostic, just JSON messages
 
 
 
@@ -108,20 +131,20 @@ Presented by Wyatt Preul
 
 * Start serializer with env variables to talk to influx
 * Send serializer data and verify in influx dashboard
-* ... stopping slides until challenge 11 ....
+* ... stopping slides until challenge 11, refer to each README ....
 
 
 
 ### Challenge 11
 
-once ready to learn about Consul and ContainerPilot, open the next slide
+* When ready to learn about Consul and ContainerPilot, open the next slide
 
 
 
 ### Consul
 
 * Service catalog/registry
-* Nice API and works well with ContainerPilot
+* Simple API and works well with ContainerPilot
 
 
 
@@ -146,4 +169,4 @@ once ready to learn about Consul and ContainerPilot, open the next slide
 ### Challenge 11
 
 * All services are mostly updated to use consul and ContainerPilot
-* Update `docker-compose.yml` entries to link consul and set the CONSUL_HOST environment variable
+* Update `docker-compose.yml` entries to link consul and set the `CONSUL_HOST` environment variable

@@ -18,4 +18,4 @@ environment:
 
 Scale the services independently (`docker-compose scale`). You can also kill individual services (`docker stop` or `docker kill`) and watch their dependent services respond gracefully.
 
-## Next Up: Have Fun!
+## Next Up: [Bonus](../bonus/README.md)

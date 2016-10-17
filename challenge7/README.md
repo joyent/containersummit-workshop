@@ -2,10 +2,9 @@
 
 1. Build the images and run the containers with docker-compose:
 
-```sh
-docker-compose up -d
-```
-
+  ```sh
+  docker-compose up -d
+  ```
 2. Point your browser to [http://localhost:10001/]() to see the chart.
 3. Write data to the serializer using the `serializer/testWrite.sh` script.
 

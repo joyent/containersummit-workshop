@@ -22,6 +22,7 @@ Documentation on how to start the container can be found [here](https://hub.dock
 Your challenge is to startup the InfluxDB container and initialize it with a `sensors` database. Once you have it running successfully, open your browser and review the influx web interface.
 
 __hint__ new databases can be created with `PRE_CREATE_DB` environment variable
+
 __hint__ the InfluxDB dashboard is listening on port 8083
 
 

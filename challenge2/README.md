@@ -11,7 +11,7 @@ Point your browser to [http://localhost:10001](). You should see a chart. Simple
 
 ![image](../images/challenge2.png)
 
-Next we are going to start our database. To do this we are going to take advantage of Docker. If you haven't done this already you can fetch the InfluxDB container by running:
+Next we are going to start our database. To do this we are going to take advantage of [Docker](https://docs.docker.com/engine/installation/). If you haven't done this already you can fetch the InfluxDB container by running:
 
 ```sh
 docker pull tutum/influxdb

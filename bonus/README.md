@@ -18,5 +18,10 @@ docker-compose up -d
 
 Now everything is running on the Joyent Public Cloud!
 
+To find your frontend use:
+
+```sh
+triton ip frontend
+```
 
 ## Next Up: Have Fun!

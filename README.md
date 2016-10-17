@@ -12,4 +12,4 @@ npm start
 ```
 
 
-## Next Up: [Challenge 1](../challenge1/README.md)
+## Next Up: [Challenge 1](./challenge1/README.md)

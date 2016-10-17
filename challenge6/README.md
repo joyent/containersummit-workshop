@@ -6,17 +6,15 @@
 4. Get the IPAddress of the influx container `docker inspect [ContainerID] | grep IPAddress`
 5. Start the serializer
 
-```sh
-docker run -d -p 10000:10000 -e PORT=10000 -e INFLUXDB_HOST=172.17.0.2 -e INFLUXDB_USER=root -e INFLUXDB_PWD=root serializer
-```
-
+  ```sh
+  docker run -d -p 10000:10000 -e PORT=10000 -e INFLUXDB_HOST=172.17.0.2 -e INFLUXDB_USER=root -e INFLUXDB_PWD=root serializer
+  ```
 6. Get the IPAddress of the serializer container `docker inspect [ContainerID] | grep IPAddress`
 7. Start the frontend
 
-```sh
-docker run -d -p 10001:10001 -e SERIALIZER_HOST=172.17.0.3 -e SERIALIZER_PORT=10000 -e PORT=10001 frontend
-```
-
+  ```sh
+  docker run -d -p 10001:10001 -e SERIALIZER_HOST=172.17.0.3 -e SERIALIZER_PORT=10000 -e PORT=10001 frontend
+  ```
 8. Point your browser to [http://localhost:10001/]() to see the chart.
 9. Write data to the serializer using the `serializer/testWrite.sh` script.
 

@@ -2,7 +2,7 @@
 
 1. Add the following to the `docker-compose.yml` file
 
-```
+  ```
 motion:
   build: ./motion
   links:
@@ -13,15 +13,13 @@ motion:
   restart: always
   env_file:
     - sensors.env
-```
-
+  ```
 2. Add the following to the humidity and temperature sections of the `docker-compose.yml` file
 
-```
+  ```
 env_file:
     - sensors.env
-```
-
+  ```
 3. Build and run the containers `docker-compose up -d`
 4. Point your browser to [http://localhost:10001/]() to see the chart.
 

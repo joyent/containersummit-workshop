@@ -1,6 +1,7 @@
 ## Solution to Challenge 10
 
 1. Change the serializer entry in the `docker-compose.yml` file
+
   from
   ```
 ports:

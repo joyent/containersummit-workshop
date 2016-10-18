@@ -46,24 +46,21 @@ var initChart = function(type) {
   });
   yAxis.render();
 
-  var start = (new Date().getTime() / 1000) - 50;
-  for (var idx = 0; idx <= 50; ++idx) {
-    chart.series[0].data.push({x: start + idx, y: 0});
-  }
   chart.render();
 
   return chart;
 };
 
 var updateChart = function(graph, point) {
-  var oldTime = graph.series[0].data[graph.series[0].data.length - 1].x;
+  var previousPoint = graph.series[0].data[graph.series[0].data.length - 1];
+  var oldTime = previousPoint ? previousPoint.x : 0;
   var newTime = Math.round(point.time / 1000);
-  if (oldTime >= newTime) {
+  if (oldTime > newTime) {
     return;
   }
 
   if (graph.series[0].data.length >= 50) {
-    graph.series[0].data = _.drop(graph.series[0].data, graph.series[0].data.length - 49);
+    graph.series[0].data = _.drop(graph.series[0].data, graph.series[0].data.length - 50);
   }
 
   graph.series[0].data.push({ x: newTime, y: point.value });

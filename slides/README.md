@@ -22,7 +22,7 @@ yarn/npm install
 * Adapted from [_microservices-iot_](https://github.com/nearform/micro-services-tutorial-iot)
 * Adapted from [_microservices-workshop_](https://github.com/lloydbenson/microservices-workshop)
 
-Presented by Wyatt Preul
+Presented by Wyatt Preul & Shubra Kar
 
 
 
@@ -173,3 +173,12 @@ Presented by Wyatt Preul
 
 * All services are mostly updated to use consul and ContainerPilot
 * Update `docker-compose.yml` entries to link consul and set the `CONSUL_HOST` environment variable
+
+
+
+### Contact Details
+
+Email with questions:
+
+* wyatt.preul@joyent.com
+* shubra.kar@joyent.com

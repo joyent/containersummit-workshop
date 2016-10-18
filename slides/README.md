@@ -22,7 +22,7 @@ yarn/npm install
 * Adapted from [_microservices-iot_](https://github.com/nearform/micro-services-tutorial-iot)
 * Adapted from [_microservices-workshop_](https://github.com/lloydbenson/microservices-workshop)
 
-Presented by Wyatt Preul & Shubra Kar
+Presented by Wyatt Preul & Shubhra Kar
 
 
 
@@ -181,4 +181,4 @@ Presented by Wyatt Preul & Shubra Kar
 Email with questions:
 
 * wyatt.preul@joyent.com
-* shubra.kar@joyent.com
+* shubhra.kar@joyent.com

@@ -2,13 +2,12 @@
 
 1. Add the following information to each service other than consul and influx
 
-```
+  ```
 links:
   - consul:consul
 environment:
   - CONSUL_HOST=consul
-```
-
+  ```
 2. Update the `sensors.env` with the `CONSUL_HOST=consul` entry (if not done in `docker-compose.yml`)
 3. Build and run the containers `docker-compose up -d`
 4. Launch the frontend and view the charts flowing-in

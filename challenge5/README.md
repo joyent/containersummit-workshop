@@ -4,10 +4,9 @@
 2. The serializer can be started with the run script `cd serializer && ./run.sh`
 3. Start the frontend with the correct environment variables
 
-```sh
+  ```sh
 SERIALIZER_HOST=localhost SERIALIZER_PORT=10000 PORT=10001 node .
-```
-
+  ```
 4. Point your browser to [http://localhost:10001/]() to see the chart.
 5. Write data to the serializer using the `serializer/testWrite.sh` script.
 

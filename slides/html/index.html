@@ -1,10 +1,17 @@
-<section data-markdown><script type="text/template">## Setup
+<section data-markdown><script type="text/template">### Tools required
+
+* Docker
+* Node.js (tested on version 6)
+</script></section>
+<section data-markdown><script type="text/template">
+## Setup
 Clone the workshop repository to your local machine:
 
 ```bash
 git clone https://github.com/joyent/containersummit-workshop
 cd containersummit-workshop
 yarn/npm install
+# Install Docker if you haven't already
 ```
 </script></section>
 <section data-markdown><script type="text/template">
@@ -21,12 +28,6 @@ Presented by Wyatt Preul
 * Each challenge has its own folder
 * Read the README.md for each challenge
 * Each subsequent challenge has the solution to the previous challenge
-</script></section>
-<section data-markdown><script type="text/template">
-### Tools required
-
-* Docker
-* Node.js (tested on version 6)
 </script></section>
 <section data-markdown><script type="text/template">
 ### What we are Building
@@ -71,9 +72,11 @@ Presented by Wyatt Preul
 * Time-series database, perfect for sensor data stream
 </script></section>
 <section data-markdown><script type="text/template">
-### Containers
+### Docker run recap
 
-<img src="../images/nist_on_containers.png" />
+* -e for environment variables
+* -p for port mapping
+* -d for detached mode
 </script></section>
 <section data-markdown><script type="text/template">
 ### Challenge 3 - microservices?

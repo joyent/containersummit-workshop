@@ -15,7 +15,7 @@ You can stop the container at any time by using the `docker kill` or `docker sto
 
 Now that we have our database running, we are going to create a microservice to read and write to it. A serialization service has been created for you in _challenge3/serializer_.
 
-Your challenge is to write a small script to start this process and use it to write temperature values into Influx DB. Once the service is up and running you can use the following command to send data points to the service.
+Your challenge is to write a small script to start this process and use it to write temperature values into Influx DB. Once the service is up and running you can use the following command to send data points to the service. If you get a `null` body response, then that means it was successful.
 
 ```sh
 curl -X POST -d '{"role": "serialize", "cmd": "write", "type": "temperature", "value": 32}' http://localhost:10000/act  --header "Content-Type:application/json"

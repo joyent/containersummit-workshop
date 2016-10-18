@@ -1,3 +1,10 @@
+### Tools required
+
+* Docker
+* Node.js (tested on version 6)
+
+
+
 ## Setup
 Clone the workshop repository to your local machine:
 
@@ -5,6 +12,7 @@ Clone the workshop repository to your local machine:
 git clone https://github.com/joyent/containersummit-workshop
 cd containersummit-workshop
 yarn/npm install
+# Install Docker if you haven't already
 ```
 
 
@@ -23,13 +31,6 @@ Presented by Wyatt Preul
 * Each challenge has its own folder
 * Read the README.md for each challenge
 * Each subsequent challenge has the solution to the previous challenge
-
-
-
-### Tools required
-
-* Docker
-* Node.js (tested on version 6)
 
 
 
@@ -81,9 +82,11 @@ Presented by Wyatt Preul
 
 
 
-### Containers
+### Docker run recap
 
-<img src="../images/nist_on_containers.png" />
+* -e for environment variables
+* -p for port mapping
+* -d for detached mode
 
 
 

@@ -31,6 +31,6 @@ Update the `docker-compose.yml` file to include the `motion` service. Also, repl
 
 __hint__ look at the existing temperature service for an example
 
-__hint__ read about the [`env-file`](https://docs.docker.com/compose/env-file/) property
+__hint__ read about the [`env_file`](https://docs.docker.com/compose/environment-variables/#/the-envfile-configuration-option) property
 
 ## Next Up: [Challenge 10](../challenge10/README.md)

@@ -27,7 +27,7 @@ Stop the containers by using the `docker-compose down`.
 
 The frontend is updated with a chart for 'motion', and now there is a new motion service that behaves like the temperature service. It will pull data from our MultiSensor and report it to the serializer.
 
-Update the `docker-compose.yml` file to include the `motion` service. Also, replace the `environment` variables for the SMARTHTHINGS data and instead read them in from the provided `sensors.env` file.
+Update the `docker-compose.yml` file to include the `motion` service. Also, replace the `environment` variables for the SMARTTHINGS data and instead read them in from the provided `sensors.env` file.
 
 __hint__ look at the existing temperature service for an example
 
